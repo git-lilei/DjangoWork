@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表页</title>
+</head>
+<body>
+
+<h2>班级信息</h2>
+<ul>
+    {% for c in classlist %}
+        <li><a href="{% url 'studenttest:detail' c.id %}">{{ c.classname }}</a></li>
+    {% empty %}
+        <h3>没有数据</h3>
+    {% endfor %}
+</ul>
+<a href="{% url 'studenttest:index' %}">返回首页</a>
+</body>
+</html>

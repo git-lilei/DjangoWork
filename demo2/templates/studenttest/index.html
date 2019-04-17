@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+    {% if username %}
+        <h2>{{ username }}</h2>
+        <a href="{% url 'studenttest:list' %}">进入班级列表</a>
+    {% else %}
+        <h2>未登录</h2>
+    {% endif %}
+</body>
+</html>

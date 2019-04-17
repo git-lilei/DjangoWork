@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表页</title>
+</head>
+<body>
+    <ul>
+        {% for book in booklist %}
+{#            <li><a href="/booktest/detail/{{book.id}}">{{book.btitle}}</a></li>#}
+            <li><a href="{% url 'booktest:detail' book.id %}">{{book.btitle}}</a></li>
+        {% empty %}
+            <h3>空的</h3>
+        {% endfor %}
+    </ul>
+{#    <a href="/booktest/">返回上一级</a>#}
+    <a href="{% url 'booktest:booktest' %}">返回上一级</a>
+</body>
+</html>

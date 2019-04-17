@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>班级详情页</title>
+</head>
+<body>
+<h2>班级:{{ classinfo.classname }}</h2>
+<ul>
+    {% for s in classinfo.studentinfo_set.all %}
+        <li>{{ s.studentname }}---{{ s.studentage }}---{{ s.studentgender }}</li>
+    {% empty %}
+        <h3>没有信息</h3>
+    {% endfor %}
+</ul>
+<a href="{% url 'studenttest:list' %}">返回上一级</a>
+
+</body>
+</html>
