@@ -26,44 +26,33 @@
             background: #FCF8E3;
         }
 
-        .priceinput {
-            width: 60px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="table-responsive">
-        <h2>书名:{{ book.btitle }}</h2>
-        <button type="button" class="btn btn-info"><a class="herfa" href="{% url 'booktest:addhero' book.id %}">添加</a></button>
+        <h2>标题:{{ question.qname }}</h2>
         <table class="table table-bordered table-condensed table-striped table-hover">
             <tr>
-                <th>角色</th>
-                <th>性别</th>
-                <th>技能</th>
+                <th>选项</th>
+                <th>票数</th>
                 <th>操作</th>
             </tr>
-            {% for hero in book.heroinfo_set.all %}
+            {% for choose in question.choose_set.all %}
                 <tr id="trstyle">
-                    <td>{{ hero.hname }}</td>
-                    <td>{{ hero.hgender }}</td>
-                    <td>{{ hero.hcontent }}</td>
+                    <td>{{ choose.cname }}</td>
+                    <td>{{ choose.cvote }}</td>
                     <td>
-                        <button type="button" class="btn-xs btn-warning">
-                            <a class="herfa" href="#">修改</a>
-                        </button>
                         <button type="button" class="btn-xs btn-danger">
-                            <a class="herfa" href="#">删除</a>
+                            <a class="herfa" href="{% url 'polls:vote' choose.id question.id %}">点击投票</a>
                         </button>
                     </td>
                 </tr>
             {% empty %}
-                <h3>没有角色信息</h3>
+                <h3>没有信息</h3>
             {% endfor %}
         </table>
-        <a href="{% url 'booktest:list' %}">返回上一级</a>
+        <a href="{% url 'polls:list' %}">返回上一级</a>
     </div>
 </div>
 

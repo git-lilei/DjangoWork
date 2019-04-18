@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>详情页</title>
+    <title>列表页</title>
     <link rel="stylesheet" href="/static/js/lib/bootstrap-3.3.7-dist/css/bootstrap.css">
     <script src="/static/js/lib/JQuery/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/lib/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
@@ -25,45 +25,33 @@
         table #trstyle:nth-child(even) {
             background: #FCF8E3;
         }
-
-        .priceinput {
-            width: 60px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="table-responsive">
-        <h2>书名:{{ book.btitle }}</h2>
-        <button type="button" class="btn btn-info"><a class="herfa" href="{% url 'booktest:addhero' book.id %}">添加</a></button>
+        <h2>投票列表</h2>
         <table class="table table-bordered table-condensed table-striped table-hover">
             <tr>
-                <th>角色</th>
-                <th>性别</th>
-                <th>技能</th>
+                <th>标题</th>
+                <th>发布时间</th>
                 <th>操作</th>
             </tr>
-            {% for hero in book.heroinfo_set.all %}
+            {% for q in qlist %}
                 <tr id="trstyle">
-                    <td>{{ hero.hname }}</td>
-                    <td>{{ hero.hgender }}</td>
-                    <td>{{ hero.hcontent }}</td>
+                    <td><a href="{% url 'polls:detail' q.id %}">{{ q.qname }}</a></td>
+                    <td>{{ q.qpub_date }}</td>
                     <td>
-                        <button type="button" class="btn-xs btn-warning">
-                            <a class="herfa" href="#">修改</a>
-                        </button>
                         <button type="button" class="btn-xs btn-danger">
                             <a class="herfa" href="#">删除</a>
                         </button>
                     </td>
                 </tr>
             {% empty %}
-                <h3>没有角色信息</h3>
+                <h3>空</h3>
             {% endfor %}
         </table>
-        <a href="{% url 'booktest:list' %}">返回上一级</a>
+        <a href="{% url 'polls:index' %}">返回首页</a>
     </div>
 </div>
 

@@ -11,8 +11,7 @@
 <div class="container">
     {% if username %}
         <h2>{{username}}</h2>
-        {# <a href="/booktest/list">进入列表页</a>#}
-        <a href="{% url 'booktest:list' %}">进入列表页</a>
+        <a href="{% url 'polls:list' %}">进入列表页</a>
     {% else %}
         <h2>未登录</h2>
     {% endif %}

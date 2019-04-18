@@ -3,17 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>列表页</title>
+    <link rel="stylesheet" href="/static/js/lib/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/js/lib/JQuery/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/lib/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        a.herfa {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        th, td {
+            text-align: center;
+        }
+
+        /*设置奇数行颜色*/
+        table #trstyle:nth-child(odd) {
+            background: #CEECEC;
+        }
+
+        /*设置偶数行颜色*/
+        table #trstyle:nth-child(even) {
+            background: #FCF8E3;
+        }
+
+        .priceinput {
+            width: 60px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <ul>
-        {% for book in booklist %}
-{#            <li><a href="/booktest/detail/{{book.id}}">{{book.btitle}}</a></li>#}
-            <li><a href="{% url 'booktest:detail' book.id %}">{{book.btitle}}</a></li>
-        {% empty %}
-            <h3>空的</h3>
-        {% endfor %}
-    </ul>
-{#    <a href="/booktest/">返回上一级</a>#}
-    <a href="{% url 'booktest:booktest' %}">返回上一级</a>
+<div class="container">
+    <div class="table-responsive">
+        <h2>图书列表</h2>
+        <button type="button" class="btn btn-info"><a class="herfa" href="/insertbook">添加</a></button>
+        <table class="table table-bordered table-condensed table-striped table-hover">
+            <tr>
+                <th>书名</th>
+                <th>发布时间</th>
+                <th>操作</th>
+            </tr>
+            {% for book in booklist %}
+                <tr id="trstyle">
+                    <td><a href="{% url 'booktest:detail' book.id %}">{{ book.btitle }}</a></td>
+                    <td>{{ book.bpub_date }}</td>
+                    <td>
+                        <button type="button" class="btn-xs btn-warning">
+                            修改
+                        </button>
+                        <button type="button" class="btn-xs btn-danger">
+                            <a class="herfa" href="{% url 'booktest:delete' book.id %}">删除</a>
+                        </button>
+                    </td>
+                </tr>
+            {% empty %}
+                <h3>没有信息</h3>
+            {% endfor %}
+        </table>
+        <a href="{% url 'booktest:booktest' %}">返回首页</a>
+    </div>
+</div>
+
 </body>
 </html>
