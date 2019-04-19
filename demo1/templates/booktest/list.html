@@ -37,7 +37,7 @@
 <div class="container">
     <div class="table-responsive">
         <h2>图书列表</h2>
-        <button type="button" class="btn btn-info"><a class="herfa" href="/insertbook">添加</a></button>
+        <button type="button" class="btn btn-info"><a class="herfa" href="{% url 'booktest:addbook' %}">添加</a></button>
         <table class="table table-bordered table-condensed table-striped table-hover">
             <tr>
                 <th>书名</th>
@@ -50,7 +50,7 @@
                     <td>{{ book.bpub_date }}</td>
                     <td>
                         <button type="button" class="btn-xs btn-warning">
-                            修改
+                            <a class="herfa" href="{% url 'booktest:updatebook' book.id %}">修改</a>
                         </button>
                         <button type="button" class="btn-xs btn-danger">
                             <a class="herfa" href="{% url 'booktest:delete' book.id %}">删除</a>

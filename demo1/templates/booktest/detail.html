@@ -52,10 +52,10 @@
                     <td>{{ hero.hcontent }}</td>
                     <td>
                         <button type="button" class="btn-xs btn-warning">
-                            <a class="herfa" href="#">修改</a>
+                            <a class="herfa" href="{% url 'booktest:updatehero' hero.id %}">修改</a>
                         </button>
                         <button type="button" class="btn-xs btn-danger">
-                            <a class="herfa" href="#">删除</a>
+                            <a class="herfa" href="{% url 'booktest:deletehero' hero.id %}">删除</a>
                         </button>
                     </td>
                 </tr>

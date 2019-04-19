@@ -5,7 +5,7 @@ from django.template import loader
 
 
 # Create your views here.
-
+# 首页
 def index(request):
     # return HttpResponse('首页')
     # 加载模板
@@ -17,45 +17,39 @@ def index(request):
     return render(request, 'booktest/index.html', {'username': 'MrBean'})
 
 
+# 图书列表
 def list(request):
-    # return HttpResponse('列表页')
-    # template = loader.get_template('booktest/list.html')
-    # booklist = BookInfo.objects.all()
-    # context = {"booklist": booklist}
-    # result = template.render(context=context)
-    # return HttpResponse(result)
-
     booklist = BookInfo.objects.all()
     return render(request, 'booktest/list.html', {"booklist": booklist})
 
 
+# 角色详情页
 def detail(request, id):
     try:
-        # template = loader.get_template('booktest/detail.html')
-        # book = BookInfo.objects.get(pk=int(id))
-        # context = {'book':book}
-        # result = template.render(context=context)
-        # return HttpResponse(result)
-
         book = BookInfo.objects.get(pk=int(id))
         return render(request, 'booktest/detail.html', {'book': book})
     except:
         return HttpResponse('未知错误')
 
 
-def delete(request, id):
-    try:
-        BookInfo.objects.get(pk=int(id)).delete()
-        booklist = BookInfo.objects.all()
-        return render(request, 'booktest/list.html', {"booklist": booklist})
-    except:
-        return HttpResponse('未知错误')
+# 添加图书
+def addbook(request):
+    return render(request, 'booktest/addbook.html')
 
 
+# 执行添加图书
+def addbookhandler(request):
+    btitleinfo = request.POST['btitle']
+    BookInfo.objects.create(btitle=btitleinfo)
+    return HttpResponseRedirect('/booktest/list')
+
+
+# 添加角色
 def addhero(request, bookid):
     return render(request, 'booktest/addhero.html', {"bookid": bookid})
 
 
+# 处理添加角色
 def addherohandler(request):
     bookid = request.POST['bookid']
     hname = request.POST['hname']
@@ -71,4 +65,75 @@ def addherohandler(request):
     h.hcontent = hcontent
     h.hbook = book
     h.save()
-    return HttpResponseRedirect('booktest/detail/' + str(bookid) + '/', {'book': book})
+    return HttpResponseRedirect('/booktest/detail/' + str(bookid) + '/')
+
+
+# 删除图书
+def delete(request, id):
+    try:
+        BookInfo.objects.get(pk=int(id)).delete()
+        return HttpResponseRedirect('/booktest/list/')
+    except:
+        return HttpResponse('未知错误')
+
+
+# 删除角色
+def deletehero(request, id):
+    try:
+        hero = HeroInfo.objects.get(pk=int(id))
+        hero.delete()
+        bookid = hero.hbook.id
+        return HttpResponseRedirect('/booktest/detail/' + str(bookid) + '/')
+    except:
+        return HttpResponse('未知错误')
+
+
+# 修改图书
+def updatebook(request, bookid):
+    try:
+        book = BookInfo.objects.get(pk=bookid)
+        return render(request, 'booktest/updatebook.html', {'book': book})
+    except:
+        return HttpResponse('未知错误')
+
+
+# 执行修改图书
+def updatebookhandler(request, bookid):
+    try:
+        btitle = request.POST['btitle']
+        book = BookInfo.objects.get(pk=bookid)
+        book.btitle = btitle
+        book.save()
+        return HttpResponseRedirect('/booktest/list')
+    except:
+        return HttpResponse('未知错误')
+
+
+# 修改角色
+def updatehero(request, heroid):
+    try:
+        hero = HeroInfo.objects.get(pk=heroid)
+        return render(request, 'booktest/updatehero.html', {'hero': hero})
+    except:
+        return HttpResponse('未知错误.')
+
+
+# 执行修改角色
+def updateherohandler(request, heroid):
+    try:
+        bookid = request.POST['bookid']
+        hname = request.POST['hname']
+        hgender = request.POST['hgender']
+        hcontent = request.POST['hcontent']
+        h = HeroInfo.objects.get(pk=heroid)
+        h.hname = hname
+        if hgender == '1':
+            h.hgender = True
+        else:
+            h.hgender = False
+        h.hcontent = hcontent
+        # h.hbook = book
+        h.save()
+        return HttpResponseRedirect('/booktest/detail/' + str(bookid) + '/')
+    except:
+        return HttpResponse('未知错误')
