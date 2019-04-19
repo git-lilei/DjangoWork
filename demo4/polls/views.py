@@ -21,13 +21,14 @@ def detail(request, id):
         return HttpResponse('未知错误')
 
 
-def vote(request, cid, qid):
+def vote(request, cid):
     try:
 
         choose = Choose.objects.get(pk=cid)
         choose.cvote += 1
         choose.save()
-        question = Question.objects.get(pk=qid)
-        return render(request, 'polls/detail.html', {'question': question})
+        qid = choose.cquestion.id
+        print(type(qid))
+        return HttpResponseRedirect('/polls/detail/'+str(qid)+'/')
     except:
         return HttpResponse('未知错误')

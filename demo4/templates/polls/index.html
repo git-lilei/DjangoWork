@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/static/js/lib/bootstrap-3.3.7-dist/css/bootstrap.css">
     <script src="/static/js/lib/JQuery/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/lib/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/lib/echarts/echarts.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
 <body>
 <div class="container">
@@ -15,7 +17,34 @@
     {% else %}
         <h2>未登录</h2>
     {% endif %}
+{#    为echarts准备一个具备大小的DOM #}
+    <div id="main" style="width: 600px;height:400px;">
+    </div>
 </div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        color: ['#61a0a8'],
+        title:{
+            text: 'ECharts 入门示例'
+        },
+        tooltip:{},
+        legend: {
+            data: ['{{ username}}']
+        },
+        xAxis:{
+            data:['T恤','卫衣','跑步鞋','休闲裤','帽子']
+        },
+        yAxis:{},
+        series:[{
+            name:'{{ username}}',
+            type:'bar',
+            data:[5, 20, 36, 10, 10]
+        }]
+    };
+
+    myChart.setOption(option)
+</script>
 
 </body>
 </html>
