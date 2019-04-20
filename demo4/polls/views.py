@@ -68,3 +68,68 @@ def addchoosehandler(request):
         return HttpResponseRedirect('/polls/detail/' + str(qid) + '/')
     except:
         return HttpResponse('未知错误~')
+
+
+# 删除投票问题
+def deletequestion(request, qid):
+    try:
+        Question.objects.get(pk=qid).delete()
+        return HttpResponseRedirect('/polls/list')
+    except:
+        return HttpResponse('未知错误。')
+
+
+# 删除投票选项
+def deletechoose(request, cid):
+    try:
+        choose = Choose.objects.get(pk=cid)
+        choose.delete()
+        qid = choose.cquestion.id
+        return HttpResponseRedirect('/polls/detail/' + str(qid) + '/')
+    except:
+        return HttpResponse('未知错误。')
+
+
+# 修改投票问题
+def updatequestion(request, qid):
+    question = Question.objects.get(pk=qid)
+    return render(request, 'polls/updatequestion.html', {'question': question})
+
+
+# 执行修改投票问题
+def updatequehandler(request, qid):
+    try:
+        qname = request.POST['qname']
+        question = Question.objects.get(pk=qid)
+        question.qname = qname
+        question.save()
+        return HttpResponseRedirect('/polls/list')
+    except:
+        return HttpResponse('未知错误~')
+
+
+# 修改投票选项
+def updatechoose(request, cid):
+    try:
+        choose = Choose.objects.get(pk=cid)
+        return render(request, 'polls/updatechoose.html', {'choose': choose})
+    except:
+        return HttpResponse('未知错误。')
+
+
+# 执行修改投票选项
+def updatechoosehandler(request, cid):
+    try:
+        cname = request.POST['cname']
+        cvote = request.POST['cvote']
+        qid = request.POST['qid']
+        choose = Choose.objects.get(pk=cid)
+        choose.cname = cname
+        if int(cvote) < 0:
+            choose.cvote = cvote[1:]
+        else:
+            choose.cvote = cvote
+        choose.save()
+        return HttpResponseRedirect('/polls/detail/' + str(qid) + '/')
+    except:
+        return HttpResponse('未知错误')

@@ -12,4 +12,11 @@ urlpatterns = [
     url(r'^addquehandler/$', views.addquehandler, name='addquehandler'),
     url(r'^addchoose/(\d+)/$', views.addchoose, name='addchoose'),
     url(r'^addchoosehandler/$', views.addchoosehandler, name='addchoosehandler'),
+    url(r'^deletequestion/(\d+)/$', views.deletequestion, name='deletequestion'),
+    url(r'^deletechoose/(\d+)/$', views.deletechoose, name='deletechoose'),
+    url(r'^updatequestion/(\d+)/$', views.updatequestion, name='updatequestion'),
+    url(r'^updatequehandler/(\d+)/$', views.updatequehandler, name='updatequehandler'),
+    url(r'^updatechoose/(\d+)/$', views.updatechoose, name='updatechoose'),
+    url(r'^updatechoosehandler/(\d+)/$', views.updatechoosehandler, name='updatechoosehandler'),
+
 ]

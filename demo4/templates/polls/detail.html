@@ -44,8 +44,14 @@
                     <td>{{ choose.cname }}</td>
                     <td>{{ choose.cvote }}</td>
                     <td>
-                        <button type="button" class="btn-xs btn-danger">
+                        <button type="button" class="btn-xs btn-success">
                             <a class="herfa" href="{% url 'polls:vote' choose.id %}">点击投票</a>
+                        </button>
+                        <button type="button" class="btn-xs btn-warning">
+                            <a class="herfa" href="{% url 'polls:updatechoose' choose.id %}">修改</a>
+                        </button>
+                        <button type="button" class="btn-xs btn-danger">
+                            <a class="herfa" href="{% url 'polls:deletechoose' choose.id %}">删除</a>
                         </button>
                     </td>
                 </tr>

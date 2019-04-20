@@ -36,11 +36,21 @@
             <tr>
                 <th>标题</th>
                 <th>发布时间</th>
+                <th>操作</th>
             </tr>
             {% for q in qlist %}
                 <tr id="trstyle">
                     <td><a href="{% url 'polls:detail' q.id %}">{{ q.qname }}</a></td>
                     <td>{{ q.qpub_date }}</td>
+                    <td>
+                        <button type="button" class="btn-xs btn-warning">
+                            <a class="herfa" href="{% url 'polls:updatequestion' q.id %}">修改</a>
+                        </button>
+                        <button type="button" class="btn-xs btn-danger">
+                            <a class="herfa" href="{% url 'polls:deletequestion' q.id %}">删除</a>
+                        </button>
+                    </td>
+
                 </tr>
             {% empty %}
                 <h3>空</h3>
