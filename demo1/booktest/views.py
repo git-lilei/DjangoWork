@@ -132,7 +132,6 @@ def updateherohandler(request, heroid):
         else:
             h.hgender = False
         h.hcontent = hcontent
-        # h.hbook = book
         h.save()
         return HttpResponseRedirect('/booktest/detail/' + str(bookid) + '/')
     except:
