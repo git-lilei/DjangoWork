@@ -50,6 +50,7 @@ class Comment(models.Model):
     pub_date = models.DateTimeField('发布时间', auto_now_add=True)
 
     class Meta:
+        ordering = ('-pub_date',)
         verbose_name = '评论'
         verbose_name_plural = verbose_name
 
