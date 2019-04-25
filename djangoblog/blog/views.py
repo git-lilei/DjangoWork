@@ -29,7 +29,15 @@ def index(request):
 
 # 归档
 def archives(request, year, month):
-    bloglist = Blog.objects.filter(pub_date__year=year, pub_date__month=month)
+    blogs = Blog.objects.filter(pub_date__year=year, pub_date__month=month)
+    paginator = Paginator(blogs, 2)
+    page = request.GET.get('page')
+    try:
+        bloglist = paginator.page(page)
+    except PageNotAnInteger:
+        bloglist = paginator.page(1)
+    except EmptyPage:
+        bloglist = paginator.page(paginator.num_pages)
     bloglist3 = Blog.objects.all()[:3]
     categorylist = Category.objects.all()
     taglist = Tag.objects.all()[:10]
@@ -40,7 +48,15 @@ def archives(request, year, month):
 
 # 标签
 def tag(request, tid):
-    bloglist = get_object_or_404(Tag, pk=tid).blog_set.all()
+    blogs = get_object_or_404(Tag, pk=tid).blog_set.all()
+    paginator = Paginator(blogs, 2)
+    page = request.GET.get('page')
+    try:
+        bloglist = paginator.page(page)
+    except PageNotAnInteger:
+        bloglist = paginator.page(1)
+    except EmptyPage:
+        bloglist = paginator.page(paginator.num_pages)
     bloglist3 = Blog.objects.all()[:3]
     categorylist = Category.objects.all()
     taglist = Tag.objects.all()[:10]
@@ -52,7 +68,15 @@ def tag(request, tid):
 # 分类
 def category(request, cid):
     cate = get_object_or_404(Category, pk=cid)
-    bloglist = Blog.objects.filter(category=cate)
+    blogs = Blog.objects.filter(category=cate)
+    paginator = Paginator(blogs, 2)
+    page = request.GET.get('page')
+    try:
+        bloglist = paginator.page(page)
+    except PageNotAnInteger:
+        bloglist = paginator.page(1)
+    except EmptyPage:
+        bloglist = paginator.page(paginator.num_pages)
     bloglist3 = Blog.objects.all()[:3]
     categorylist = Category.objects.all()
     taglist = Tag.objects.all()[:10]
@@ -66,12 +90,14 @@ def blogdetail(request, bid):
     blogdetail = Blog.objects.get(pk=bid)
     blogdetail.view_num += 1
     blogdetail.save()
-    blogdetail.content = markdown.markdown(blogdetail.content,
-                                           extensions=[
-                                               'markdown.extensions.extra',
-                                               'markdown.extensions.codehilite',
-                                               'markdown.extensions.toc',
-                                           ])
+    md = markdown.Markdown(extensions=[
+                                       'markdown.extensions.extra',
+                                       'markdown.extensions.codehilite',
+                                       'markdown.extensions.toc',
+                                   ])
+    blogdetail.content = md.convert(blogdetail.content)
+    blogdetail.toc = md.toc
+
     commentlist = blogdetail.comment_set.all()
     bloglist = Blog.objects.all()
     bloglist3 = Blog.objects.all()[:3]

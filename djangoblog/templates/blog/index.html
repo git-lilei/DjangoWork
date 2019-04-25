@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-5 col-xs-8">
                 <div class="logo">
-                    <h1><a href="index.html"><b>Black</b> &amp; White</a></h1>
+                    <h1><a href="{% url 'blog:index' %}"><b>Black</b> &amp; White</a></h1>
                 </div>
             </div>
             {# col-md-4 #}
@@ -93,7 +93,9 @@
                         <div class="entry-content clearfix">
                             <p>{{ blog.content|slice:'200' }}...</p>
                             <div class="read-more cl-effect-14">
-                                <a href="#" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                                <a href="{% url 'blog:blogdetail' blog.id %}" class="more-link">
+                                    继续阅读 <span class="meta-nav">→</span>
+                                </a>
                             </div>
                         </div>
                     </article>
@@ -106,7 +108,9 @@
                     <div class="pagination">
                         <ul>
                             {% if bloglist.has_previous %}
-                                <a href="?page={{ bloglist.previous_page_number }}">&lt;&lt;&nbsp;</a>
+                                <a href="?page={{ bloglist.previous_page_number }}">⏪</a>
+                            {% else %}
+                                <a href="#">⏪</a>
                             {% endif %}
 
                             {% for num in bloglist.paginator.page_range %}
@@ -118,7 +122,9 @@
                             {% endfor %}
 
                             {% if bloglist.has_next %}
-                                <a href="?page={{ bloglist.next_page_number }}">&nbsp;&gt;&gt;</a>
+                                <a href="?page={{ bloglist.next_page_number }}">⏩</a>
+                            {% else %}
+                                <a href="#">⏩</a>
                             {% endif %}
                         </ul>
 
