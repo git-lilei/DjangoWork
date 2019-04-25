@@ -1,0 +1,25 @@
+div.header{
+    height: 200px;
+    background-color: #1b6d85;
+}
+div.content{
+    margin: 0 auto;
+    height: 1000px;
+    width: 1100px;
+}
+div.left{
+    width: 30%;
+    height: 1000px;
+    background-color: #4cae4c;
+    display: inline-block;
+}
+div.right{
+    float: right;
+    width: 70%;
+    height: 1000px;
+    background-color: #f5e79e;
+}
+div.footer{
+    height: 200px;
+    background-color: #1b6d85;
+}

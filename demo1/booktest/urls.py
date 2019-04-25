@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^updatebookhandler/(\d+)/$', views.updatebookhandler, name='updatebookhandler'),
     url(r'^updatehero/(\d+)/$', views.updatehero, name='updatehero'),
     url(r'^updateherohandler/(\d+)/$', views.updateherohandler, name='updateherohandler'),
+    url(r'^login$', views.login, name='login'),
+    url(r'^loginout', views.loginout, name='loginout'),
 ]

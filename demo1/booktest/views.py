@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import BookInfo, HeroInfo
 from django.template import loader
@@ -7,15 +7,22 @@ from django.template import loader
 # Create your views here.
 # 首页
 def index(request):
-    # return HttpResponse('首页')
-    # 加载模板
-    # template = loader.get_template('booktest/index.html')
-    # context = {'username': 'MrBean'}
-    # result = template.render(context=context)
-    # return HttpResponse(result)
+    return render(request, 'booktest/index.html', {'username': request.session.get('username')})
 
-    return render(request, 'booktest/index.html', {'username': 'MrBean'})
 
+# 登录
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'booktest/login.html')
+    elif request.method == 'POST':
+        request.session['username'] = request.POST['username']
+        return redirect(reverse('booktest:booktest'))
+
+
+# 退出登录
+def loginout(request):
+    request.session.clear()
+    return redirect(reverse('booktest:booktest'))
 
 # 图书列表
 def list(request):
