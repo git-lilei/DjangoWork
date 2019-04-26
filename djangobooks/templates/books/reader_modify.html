@@ -1,0 +1,29 @@
+{% extends "books/layout.html" %}
+{% block title %} 个人信息修改 {% endblock %}
+{% block link %}
+    <a href="{% url 'books:userdetail' uid %}"> 返回 </a>
+{% endblock %}
+{% block body %}
+    {% if error %}
+        <div class=error>
+            <strong>Errror : </strong> {{ error }}
+        </div>
+    {% endif %}
+    <form action="{% url 'books:updateUserInfo' uid %}" method=post>
+        {% csrf_token %}
+        <dl>
+            <dt>用户名:</dt>
+            <dd>{{ user.name }}</dd>
+            <dt>请输入新密码:</dt>
+            <dd>{{ user.pwd }}</dd>
+            <dt>学院:</dt>
+            <dd>{{ user.college }}</dd>
+            <dt>学号:</dt>
+            <dd>{{ user.num }}</dd>
+            <dt>邮箱:</dt>
+            <dd>{{ user.email }}</dd>
+        </dl>
+        <div class=actions><input type=submit value="确定"></div>
+    </form>
+
+{% endblock %}
