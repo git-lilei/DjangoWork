@@ -2,6 +2,7 @@ from django.contrib.syndication.views import Feed
 from .models import Blog
 from django.shortcuts import reverse
 
+
 class BlogFeed(Feed):
     title = '文章'
     description = '内容'

@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
+from haystack.views import SearchView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('blogs/', include('blogs.urls', namespace='blogs')),
     url('blogs/', include('comments.urls', namespace='comments')),
+    url('search/', SearchView(), name='search'),
 ]
