@@ -2,7 +2,7 @@
 {% block title %} 个人主页 {% endblock %}
 
 {% block link %}
-	<a href="{% url 'books:reader' user.id %}"> 返回  </a>  |
+	<a href="{% url 'books:reader' %}"> 返回  </a>  |
 	<a href="{% url 'books:updateUserInfo' user.id %}"> 修改 </a>
 {% endblock %}
 {% block body  %}

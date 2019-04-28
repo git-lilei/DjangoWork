@@ -1,7 +1,8 @@
 {% extends "books/layout.html" %}
 {% block title %} 查询  {% endblock %}
 {% block link %}
-    <a href="{% url 'books:reader' user.id %}"> 返回 </a>
+
+    <a href="{% url 'books:reader'%}"> 返回 </a>
 {% endblock %}
 {% block body %}
     <h2> 查询 </h2>

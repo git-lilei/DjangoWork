@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import UserForm
 import datetime
+from datetime import timedelta
 
 
 # Create your views here.
@@ -12,7 +13,8 @@ def index(request):
 
 
 # 主页
-def reader(request, uid):
+def reader(request):
+    uid = User.objects.get(name = request.session.get('username')).id
     user = User.objects.get(pk=uid)
     return render(request, 'books/reader.html', {'user': user})
 
@@ -52,7 +54,7 @@ def register(request):
 # 注销登录
 def loginout(request):
     del request.session['username']
-    return render(request, 'books/index.html')
+    return redirect(reverse('books:index'))
 
 
 # 查看个人信息
@@ -77,8 +79,8 @@ def updateUserInfo(request, uid):
 
 
 # 进入查询的页面
-def checkall(request, uid):
-    return render(request, 'search/search.html', {'uid': uid})
+def checkall(request):
+    return render(request, 'search/search.html')
 
 
 # 查看书籍信息
@@ -90,11 +92,24 @@ def readerbook(request, bid):
     elif request.method == 'POST':
         book = get_object_or_404(Book, pk=bid)
         reader = History.objects.filter(book=book).first()
-        h = History()
-        h.book = book
-        h.user = reader.user
-        h.return_date = datetime.datetime.now()
-        h.return_date.month + 1
-        h.save()
-        # TODO
-        return render(request, 'books/reader_book.html', {'book': book, 'reader': reader})
+        if reader:
+            return render(request, 'books/reader_book.html', {'book': book, 'reader': reader, 'error': '该书已经被借阅'})
+        else:
+            h = History()
+            h.book = book
+            h.user = User.objects.get(name=request.session.get("username"))
+
+            h.return_date = datetime.datetime.now() + timedelta(days=30)
+            h.save()
+            reader = History.objects.filter(book=book).first()
+            return render(request, 'books/reader_book.html', {'book': book, 'reader': reader})
+
+
+# 查看阅读记录
+def userhistory(request, uid):
+    user = get_object_or_404(User, pk=uid)
+    historys = History.objects.filter(user=user)
+    if historys:
+        return render(request, 'books/reader_histroy.html', {'historys': historys})
+    else:
+        return render(request, 'books/reader_histroy.html', {'error': '还没有借阅信息'})
