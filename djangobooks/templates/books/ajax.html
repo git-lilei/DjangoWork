@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>异步刷新页面</title>
+    <script src="/static/js/JQuery/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(function () {
+            $('#load').click(function () {
+                $.ajax({
+                    url: '/books/ajaxdata/',
+                    type: 'post',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $('#info').text(data);
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+{% csrf_token %}
+<button id="load">点击加载</button>
+<div id="info"></div>
+</body>
+</html>

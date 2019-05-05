@@ -1,0 +1,18 @@
+{% extends 'books/layout.html' %}
+{% block title %} 欢迎使用 {% endblock %}
+
+
+
+{% block body %}
+    <h2> 欢迎使用 </h2>
+    <form action="{% url 'books:addarticle' %}" method="post">
+        {% csrf_token %}
+        请输入标题名:<input type="text" name="title">
+        <br>
+        请输入内容:
+        <br>
+        <textarea name="message" id="" cols="30" rows="10"></textarea>
+        <br>
+        <input type="submit" value="提交">
+    </form>
+{% endblock %}

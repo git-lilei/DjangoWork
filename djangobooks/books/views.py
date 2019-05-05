@@ -4,17 +4,151 @@ from .models import *
 from .forms import UserForm
 import datetime
 from datetime import timedelta
-
+from django.core.mail import send_mail, send_mass_mail, EmailMultiAlternatives
+from django.conf import settings
+# 引入绘图模块
+from PIL import Image, ImageDraw, ImageFont
+import random, io
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 # Create your views here.
 # 首页
+# @cache_page(60*15)
 def index(request):
-    return render(request, 'books/index.html')
+    articles = Articles.objects.all()
+    return render(request, 'books/index.html', {'articles': articles})
+
+# 图表页面
+def echarts(request):
+    return render(request, 'books/echarts.html')
+
+# 跳转到ajax页面
+def ajax(request):
+    return render(request, 'books/ajax.html')
+
+
+# 请求ajax数据
+def ajaxdata(request):
+    if request.method == 'GET':
+        return HttpResponse('GET请求成功')
+    elif request.method == 'POST':
+        return HttpResponse('POST请求成功')
+
+
+# ajax登录
+def ajaxlogin(request):
+    if request.method == 'GET':
+        return render(request, 'books/login.html')
+    elif request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        verifycode = request.POST["verifycode"]
+
+        user = User.objects.filter(name=username, pwd=password).first()
+        if user:
+            if verifycode == request.session["verifycode"]:
+                return HttpResponse("登录成功")
+            else:
+                return HttpResponse("验证码错误")
+        else:
+            return HttpResponse('登录失败')
+
+
+# 检查用户
+def checkuser(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        user = User.objects.filter(name=username).first()
+        if user:
+            return HttpResponse('success')
+        else:
+            return HttpResponse('failed')
+
+
+def verify(request):
+    print('+++++++++')
+    # 定义变量，用于画面的背景色、宽、高
+    bgcolor = (random.randrange(20, 100),
+               random.randrange(20, 100),
+               random.randrange(20, 100))
+    width = 100
+    heigth = 25
+    # 创建画面对象
+    im = Image.new('RGB', (width, heigth), bgcolor)
+    # 创建画笔对象
+    draw = ImageDraw.Draw(im)
+    # 调用画笔的point()函数绘制噪点
+    for i in range(0, 100):
+        xy = (random.randrange(0, width), random.randrange(0, heigth))
+    fill = (random.randrange(0, 255), 255, random.randrange(0, 255))
+    draw.point(xy, fill=fill)
+    # 定义验证码的备选值
+    str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
+    # 随机选取4个值作为验证码
+    rand_str = ''
+    for i in range(0, 4):
+        rand_str += str1[random.randrange(0, len(str1))]
+    # 构造字体对象
+    font = ImageFont.truetype('CABINSKETCH-BOLD.TTF', 23)
+    fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
+    # 绘制4个字
+    draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
+    draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
+    draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
+    draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
+    # 释放画笔
+    del draw
+    request.session['verifycode'] = rand_str
+    f = io.BytesIO()
+    im.save(f, 'png')
+    # 将内存中的图片数据返回给客户端，MIME类型为图片png
+    return HttpResponse(f.getvalue(), 'image/png')
+
+
+# 发送邮件
+def sendemail(request):
+    try:
+        # send_mail('django邮件', 'hello world！', settings.DEFAULT_FROM_EMAIL,
+        #           ['1962695785@qq.com', '17630236231@163.com'])
+        # send_mass_mail((('django邮件1', 'hello world！', settings.DEFAULT_FROM_EMAIL,
+        #                  ['1962695785@qq.com', '17630236231@163.com']),
+        #                 ('django邮件2', 'hello world！', settings.DEFAULT_FROM_EMAIL,
+        #                  ['1962695785@qq.com', '17630236231@163.com'])
+        #                 ))
+        return HttpResponse('发送成功')
+    except Exception as e:
+        return HttpResponse('发送失败', e)
+
+
+# 修改富文本
+def addarticle(request):
+    if request.method == 'GET':
+        return render(request, 'books/addarticle.html')
+    elif request.method == "POST":
+        title = request.POST['title']
+        message = request.POST['message']
+        a = Articles(title=title, message=message)
+        a.save()
+        return redirect(reverse('books:index'))
+
+
+# 上传图片
+def upload(request):
+    if request.method == 'GET':
+        return render(request, 'books/uploadpic.html')
+    elif request.method == 'POST':
+        name = request.POST['name']
+        pic = request.FILES['pic']
+        index = request.POST['index']
+        hp = HotPic(name=name, pic=pic, index=index)
+        hp.save()
+        return redirect(reverse('books:index'))
 
 
 # 主页
 def reader(request):
-    uid = User.objects.get(name = request.session.get('username')).id
+    uid = User.objects.get(name=request.session.get('username')).id
     user = User.objects.get(pk=uid)
     return render(request, 'books/reader.html', {'user': user})
 

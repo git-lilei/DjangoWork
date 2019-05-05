@@ -1,4 +1,6 @@
 from django.db import models
+from tinymce.models import HTMLField
+
 
 # Create your models here.
 # 用户表
@@ -15,6 +17,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
 
 # 图书表
 class Book(models.Model):
@@ -46,3 +49,30 @@ class History(models.Model):
 
     def __str__(self):
         return self.status
+
+
+# 首页热图
+class HotPic(models.Model):
+    name = models.CharField('图片名称', max_length=20)
+    pic = models.ImageField('图片', upload_to='hotpic')
+    index = models.SmallIntegerField('下标', unique=True)
+
+    class Meta:
+        verbose_name = '图片表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+# 富文本
+class Articles(models.Model):
+    title = models.CharField('文章标题', max_length=20)
+    message = HTMLField('文章内容')
+
+    class Meta:
+        verbose_name = '文章表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title

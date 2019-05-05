@@ -1,6 +1,20 @@
+{% load extend_fun %}
 <!doctype html>
 <title> {% block title %} 图书管理系统 {% endblock %} </title>
 <link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/js/bootstrap-3.3.7-dist/css/bootstrap.css">
+<script src="/static/js/JQuery/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/bootstrap-3.3.7-dist/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/tiny_mce/tiny_mce.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    tinyMCE.init({
+        'mode':'textareas',
+        'theme':'advanced',
+        'width':680,
+        'height':100
+    });
+</script>
+{% block js %}{% endblock %}
 <div class=page>
     <h1>图书管理系统</h1>
     <div class=navigation>
